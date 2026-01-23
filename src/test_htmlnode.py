@@ -1,6 +1,6 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from htmlnode import*
 
 class TestHTMLNode(unittest.TestCase):
     def test1(self):
@@ -64,7 +64,30 @@ class TestParentNode(unittest.TestCase):
             parent.to_html()
 
         
+class TestTextToHTML(unittest.TestCase):
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
 
+    def test_link(self):
+        node = TextNode("This is the anchor of a link node", TextType.LINK, "www.foobar.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "a")
+        self.assertEqual(html_node.value, "This is the anchor of a link node")
+        self.assertEqual(html_node.props, {"href": "www.foobar.com"})
+
+    def test_image(self):
+        node = TextNode("This is the anchor of an image node", TextType.IMAGE, "www.foobar.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, "img")
+        self.assertEqual(html_node.value, "")
+        self.assertEqual(html_node.props, {"src": "www.foobar.com", "alt": "This is the anchor of an image node"})
+
+    
+
+    
 
 
 
