@@ -146,5 +146,28 @@ class TestExtract(unittest.TestCase):
             new_nodes,
         )
 
+    def test_split_links4(self):
+        node1 = TextNode(
+            "[link1](https://i.imgur.com/zjjcJKZ.png)",
+            TextType.TEXT,
+        )
+        node2 = TextNode(
+            "[link2](https://i.imgur.com/zJjcJKZ.png)",
+            TextType.TEXT,
+        )
+        node3 = TextNode(
+            "Testing [link3](https://i.imgur.com/ZJjcJKZ.png) Tested", TextType.TEXT
+        )
+        new_nodes = split_nodes_link([node1, node2, node3])
+        self.assertListEqual(
+            [
+                TextNode("link1", TextType.LINK, "https://i.imgur.com/zjjcJKZ.png"),
+                TextNode("link2", TextType.LINK, "https://i.imgur.com/zJjcJKZ.png"),
+                TextNode("Testing ", TextType.TEXT),
+                TextNode("link3", TextType.LINK, "https://i.imgur.com/ZJjcJKZ.png"),
+                TextNode(" Tested", TextType.TEXT)
+            ],
+            new_nodes,
+        )
 if __name__ == "__main__":
     unittest.main()
